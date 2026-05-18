@@ -12,5 +12,4 @@ services:
     env_file:
       - .env.example
     volumes:
-      - ./server-files:/home/vintagestory/server-files
       - ./server-data:/home/vintagestory/server-data
