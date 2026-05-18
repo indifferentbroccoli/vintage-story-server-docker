@@ -48,7 +48,7 @@ jq \
   --argjson maxClients "${MAX_PLAYERS}" \
   --arg serverName "${SERVER_NAME}" \
   --arg password "${SERVER_PASSWORD}" \
-  '.Port = $port | .MaxClients = $maxClients | .ServerName = $serverName | .Password = $password' \
+  'del(.SavePath) | del(.ModPaths) | .Port = $port | .MaxClients = $maxClients | .ServerName = $serverName | .Password = $password' \
   "${CONFIG_FILE}" > "${CONFIG_FILE}.tmp" && mv "${CONFIG_FILE}.tmp" "${CONFIG_FILE}"
 
 exec dotnet "${SERVER_EXEC}" --dataPath "${DATA_PATH}"
