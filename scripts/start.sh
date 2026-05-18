@@ -2,7 +2,7 @@
 source "/home/vintagestory/scripts/functions.sh"
 
 SERVER_FILES="/home/vintagestory/server-files"
-DATA_PATH="${SERVER_FILES}/data"
+DATA_PATH="${SERVER_FILES}"
 
 cd "${SERVER_FILES}" || exit
 
