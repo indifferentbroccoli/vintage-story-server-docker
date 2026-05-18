@@ -26,18 +26,27 @@ fi
 
 CONFIG_FILE="${DATA_PATH}/serverconfig.json"
 
+# VS sometimes writes its config to the binary directory (CWD) instead of --dataPath.
+# Remove any stale config there so VS is forced to use DATA_PATH.
+rm -f "${SERVER_FILES}/serverconfig.json"
+
 # If no config exists, let the server generate its own defaults, then kill it
 if [ ! -f "${CONFIG_FILE}" ]; then
   LogInfo "No serverconfig.json found, generating defaults..."
   dotnet "${SERVER_EXEC}" --dataPath "${DATA_PATH}" > /dev/null 2>&1 &
   GEN_PID=$!
   WAITED=0
-  while [ ! -f "${CONFIG_FILE}" ] && [ "${WAITED}" -lt 30 ]; do
+  while [ ! -f "${CONFIG_FILE}" ] && [ ! -f "${SERVER_FILES}/serverconfig.json" ] && [ "${WAITED}" -lt 30 ]; do
     sleep 1
     WAITED=$((WAITED + 1))
   done
   kill "${GEN_PID}" 2>/dev/null
   wait "${GEN_PID}" 2>/dev/null
+  # VS may have written config to server-files (CWD) instead of --dataPath
+  if [ ! -f "${CONFIG_FILE}" ] && [ -f "${SERVER_FILES}/serverconfig.json" ]; then
+    LogInfo "Config generated in server-files, moving to server-data..."
+    mv "${SERVER_FILES}/serverconfig.json" "${CONFIG_FILE}"
+  fi
   if [ ! -f "${CONFIG_FILE}" ]; then
     LogError "Server failed to generate a default serverconfig.json"
     exit 1
