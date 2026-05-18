@@ -24,5 +24,4 @@ else
 fi
 
 mkfifo /tmp/vs_input
-exec 3>/tmp/vs_input
-exec gosu vintagestory /home/vintagestory/scripts/start.sh < /tmp/vs_input
+exec gosu vintagestory /home/vintagestory/scripts/start.sh <>/tmp/vs_input
