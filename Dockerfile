@@ -25,7 +25,9 @@ ENV HOME=/home/vintagestory \
     UPDATE_ON_START=true \
     VS_VERSION=latest \
     VS_BRANCH=stable \
-    MAX_PLAYERS=16
+    MAX_PLAYERS=16 \
+    SAVE_FILE=/home/vintagestory/server-data/Saves/default.vcdbs \
+    MOD_PATH=/home/vintagestory/server-data/Mods
 
 RUN if getent passwd 1000 > /dev/null 2>&1; then \
         userdel "$(getent passwd 1000 | cut -d: -f1)"; \
