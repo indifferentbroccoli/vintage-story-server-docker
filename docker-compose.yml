@@ -1,0 +1,15 @@
+---
+services:
+  vintagestory:
+    image: indifferentbroccoli/vintagestory-server-docker
+    platform: linux/amd64
+    restart: unless-stopped
+    container_name: vintagestory
+    stop_grace_period: 30s
+    ports:
+      - 42420:42420/udp
+      - 42420:42420/tcp
+    env_file:
+      - .env.example
+    volumes:
+      - ./server-files:/home/vintagestory/server-files

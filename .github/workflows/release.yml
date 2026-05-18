@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  release:
+    name: Release - dotnet${{ matrix.dotnet_major }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - dotnet_version: "7.0"
+            dotnet_major: "7"
+          - dotnet_version: "8.0"
+            dotnet_major: "8"
+          - dotnet_version: "10.0"
+            dotnet_major: "10"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker - Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker - Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64
+          build-args: |
+            DOTNET_VERSION=${{ matrix.dotnet_version }}
+          tags: |
+            ${{ github.repository }}:dotnet${{ matrix.dotnet_major }}
+            ${{ matrix.dotnet_major == '10' && format('{0}:latest', github.repository) || '' }}
