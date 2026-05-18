@@ -9,7 +9,7 @@ cd "${SERVER_FILES}" || exit
 LogAction "Starting Vintage Story Dedicated Server"
 
 DEFAULT_PORT="${DEFAULT_PORT:-42420}"
-MAX_CLIENTS="${MAX_CLIENTS:-16}"
+MAX_PLAYERS="${MAX_PLAYERS:-16}"
 SERVER_NAME="${SERVER_NAME:-Indifferent Broccoli Vintage Story Server}"
 SERVER_PASSWORD="${SERVER_PASSWORD:-}"
 
@@ -45,7 +45,7 @@ fi
 
 jq \
   --argjson port "${DEFAULT_PORT}" \
-  --argjson maxClients "${MAX_CLIENTS}" \
+  --argjson maxClients "${MAX_PLAYERS}" \
   --arg serverName "${SERVER_NAME}" \
   --arg password "${SERVER_PASSWORD}" \
   '.Port = $port | .MaxClients = $maxClients | .ServerName = $serverName | .Password = $password' \

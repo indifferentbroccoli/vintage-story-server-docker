@@ -34,13 +34,13 @@ term_handler() {
 trap 'term_handler' SIGTERM
 
 export DEFAULT_PORT
-export MAX_CLIENTS
+export MAX_PLAYERS
 export SERVER_NAME
 export SERVER_PASSWORD
 
 su - vintagestory -c "cd /home/vintagestory/scripts && \
   DEFAULT_PORT='${DEFAULT_PORT}' \
-  MAX_CLIENTS='${MAX_CLIENTS}' \
+  MAX_PLAYERS='${MAX_PLAYERS}' \
   SERVER_NAME='${SERVER_NAME}' \
   SERVER_PASSWORD='${SERVER_PASSWORD}' \
   ./start.sh" &

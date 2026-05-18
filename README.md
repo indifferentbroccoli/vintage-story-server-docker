@@ -87,7 +87,7 @@ You can use the following values to change the settings of the server on boot.
 | SERVER_NAME | Indifferent Broccoli Vintage Story Server | Name of the server |
 | SERVER_PASSWORD | | Password required to join the server |
 | DEFAULT_PORT | 42420 | The port the server listens on (UDP + TCP) |
-| MAX_CLIENTS | 16 | Maximum number of players |
+| MAX_PLAYERS | 16 | Maximum number of players |
 | UPDATE_ON_START | true | If set to false, skips downloading server files on startup |
 | VS_VERSION | 1.20.12 | Vintage Story server version to download |
 | VS_BRANCH | stable | Release branch (`stable` or `unstable`) |

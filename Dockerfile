@@ -24,7 +24,7 @@ ENV HOME=/home/vintagestory \
     UPDATE_ON_START=true \
     VS_VERSION=latest \
     VS_BRANCH=stable \
-    MAX_CLIENTS=16
+    MAX_PLAYERS=16
 
 RUN if getent passwd 1000 > /dev/null 2>&1; then \
         userdel "$(getent passwd 1000 | cut -d: -f1)"; \
