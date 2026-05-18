@@ -54,6 +54,7 @@ services:
       - .env
     volumes:
       - ./server-files:/home/vintagestory/server-files
+      - ./server-data:/home/vintagestory/server-data
 ```
 
 Then run:
@@ -73,6 +74,7 @@ docker run -d \
     -p 42420:42420/tcp \
     --env-file .env \
     -v ./server-files:/home/vintagestory/server-files \
+    -v ./server-data:/home/vintagestory/server-data \
     indifferentbroccoli/vintage-story-server-docker
 ```
 
@@ -93,15 +95,13 @@ You can use the following values to change the settings of the server on boot.
 | VS_BRANCH | stable | Release branch (`stable` or `unstable`) |
 
 > [!NOTE]
-> All other server settings (game rules, world size, roles, etc.) are configured directly in `serverconfig.json` inside the volume.
+> All other server settings (game rules, world size, roles, etc.) are configured directly in `serverconfig.json` inside the `server-data` volume.
 
 ## Port Forwarding
 
 Forward port `42420` UDP and TCP on your router to the host machine.
 
 ## Server Configuration
-
-All game settings are stored in `server-files/data/serverconfig.json` and are created automatically on first start. Edit this file to configure world size, roles, game rules, and more.
 
 > [!NOTE]
 > Changes to `serverconfig.json` require a server restart to take effect.
