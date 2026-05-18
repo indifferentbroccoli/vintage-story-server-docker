@@ -65,7 +65,8 @@ install() {
   fi
 
   LogInfo "Downloading Vintage Story server v${version}..."
-  wget -q "https://cdn.vintagestory.at/gamefiles/${branch}/vs_server_linux-x64_${version}.tar.gz" \
+  wget -q --tries=3 --waitretry=5 \
+    "https://cdn.vintagestory.at/gamefiles/${branch}/vs_server_linux-x64_${version}.tar.gz" \
     -O /tmp/vs_server.tar.gz
 
   if [ $? -ne 0 ]; then
