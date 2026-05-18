@@ -1,7 +1,7 @@
 ---
 services:
   vintagestory:
-    image: indifferentbroccoli/vintagestory-server-docker
+    image: indifferentbroccoli/vintage-story-server-docker
     platform: linux/amd64
     restart: unless-stopped
     container_name: vintagestory

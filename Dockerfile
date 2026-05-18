@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 LABEL maintainer="support@indifferentbroccoli.com" \
-      name="indifferentbroccoli/vintagestory-server-docker" \
-      github="https://github.com/indifferentbroccoli/vintagestory-server-docker" \
-      dockerhub="https://hub.docker.com/r/indifferentbroccoli/vintagestory-server-docker"
+      name="indifferentbroccoli/vintage-story-server-docker" \
+      github="https://github.com/indifferentbroccoli/vintage-story-server-docker" \
+      dockerhub="https://hub.docker.com/r/indifferentbroccoli/vintage-story-server-docker"
 
 ENV HOME=/home/vintagestory \
     PUID=1000 \

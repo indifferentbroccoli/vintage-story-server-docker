@@ -1,9 +1,10 @@
 <!-- markdownlint-disable-next-line -->
-[![GitHub License](https://img.shields.io/github/license/indifferentbroccoli/vintagestory-server-docker?style=for-the-badge&color=6aa84f)](https://github.com/indifferentbroccoli/vintagestory-server-docker/blob/main/LICENSE)
-[![GitHub Release](https://img.shields.io/github/v/release/indifferentbroccoli/vintagestory-server-docker?style=for-the-badge&color=6aa84f)](https://github.com/indifferentbroccoli/vintagestory-server-docker/releases)
-[![GitHub Repo stars](https://img.shields.io/github/stars/indifferentbroccoli/vintagestory-server-docker?style=for-the-badge&color=6aa84f)](https://github.com/indifferentbroccoli/vintagestory-server-docker)
+![marketing_assets_banner](https://github.com/user-attachments/assets/b8b4ae5c-06bb-46a7-8d94-903a04595036)
+[![GitHub License](https://img.shields.io/github/license/indifferentbroccoli/vintage-story-server-docker?style=for-the-badge&color=6aa84f)](https://github.com/indifferentbroccoli/vintage-story-server-docker/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/indifferentbroccoli/vintage-story-server-docker?style=for-the-badge&color=6aa84f)](https://github.com/indifferentbroccoli/vintage-story-server-docker/releases)
+[![GitHub Repo stars](https://img.shields.io/github/stars/indifferentbroccoli/vintage-story-server-docker?style=for-the-badge&color=6aa84f)](https://github.com/indifferentbroccoli/vintage-story-server-docker)
 [![Discord](https://img.shields.io/discord/798321161082896395?style=for-the-badge&label=Discord&labelColor=5865F2&color=6aa84f)](https://discord.gg/indifferentbroccoli)
-[![Docker Pulls](https://img.shields.io/docker/pulls/indifferentbroccoli/vintagestory-server-docker?style=for-the-badge&color=6aa84f)](https://hub.docker.com/r/indifferentbroccoli/vintagestory-server-docker)
+[![Docker Pulls](https://img.shields.io/docker/pulls/indifferentbroccoli/vintage-story-server-docker?style=for-the-badge&color=6aa84f)](https://hub.docker.com/r/indifferentbroccoli/vintage-story-server-docker)
 
 Game server hosting
 
@@ -42,7 +43,7 @@ Copy the `.env.example` file to a new file called `.env`. Then use either `docke
 ```yaml
 services:
   vintagestory:
-    image: indifferentbroccoli/vintagestory-server-docker
+    image: indifferentbroccoli/vintage-story-server-docker
     restart: unless-stopped
     container_name: vintagestory
     stop_grace_period: 30s
@@ -72,7 +73,7 @@ docker run -d \
     -p 42420:42420/tcp \
     --env-file .env \
     -v ./server-files:/home/vintagestory/server-files \
-    indifferentbroccoli/vintagestory-server-docker
+    indifferentbroccoli/vintage-story-server-docker
 ```
 
 ## Environment Variables
@@ -109,5 +110,5 @@ All game settings are stored in `server-files/data/serverconfig.json` and are cr
 
 For issues and questions:
 
-- GitHub Issues: [Report an issue](https://github.com/indifferentbroccoli/vintagestory-server-docker/issues)
+- GitHub Issues: [Report an issue](https://github.com/indifferentbroccoli/vintage-story-server-docker/issues)
 - Game Server Hosting: [indifferentbroccoli.com](https://indifferentbroccoli.com)
