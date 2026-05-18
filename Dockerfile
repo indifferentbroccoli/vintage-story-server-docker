@@ -22,7 +22,7 @@ ENV HOME=/home/vintagestory \
     SERVER_NAME="Indifferent Broccoli Vintage Story Server" \
     SERVER_PASSWORD="" \
     UPDATE_ON_START=true \
-    VS_VERSION=1.20.12 \
+    VS_VERSION=latest \
     VS_BRANCH=stable \
     MAX_CLIENTS=16
 

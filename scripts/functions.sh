@@ -40,9 +40,20 @@ Log() {
 }
 
 install() {
-  local version="${VS_VERSION:-1.20.12}"
+  local version="${VS_VERSION:-latest}"
   local branch="${VS_BRANCH:-stable}"
   local server_files="/home/vintagestory/server-files"
+
+  if [ "${version}" = "latest" ]; then
+    LogInfo "Resolving latest ${branch} version..."
+    version=$(curl -sf "https://api.vintagestory.at/${branch}.json" \
+      | jq -r 'to_entries[] | select(.value.linuxserver.latest == 1) | .key')
+    if [ -z "${version}" ]; then
+      LogError "Failed to resolve latest version from https://api.vintagestory.at/${branch}.json"
+      exit 1
+    fi
+    LogInfo "Resolved latest version: ${version}"
+  fi
 
   LogAction "Starting Vintage Story server install"
   LogInfo "Version: ${version} (${branch})"
