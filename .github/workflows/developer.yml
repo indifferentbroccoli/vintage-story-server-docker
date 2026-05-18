@@ -39,7 +39,9 @@ jobs:
         with:
           images: |
             ${{ github.repository }}
-          tags: type=raw,value=dev-dotnet${{ matrix.dotnet_major }}
+          tags: |
+            type=raw,value=dev-dotnet${{ matrix.dotnet_major }}
+            type=raw,value=dev,enable=${{ matrix.dotnet_major == '10' }}
           flavor: latest=false
 
       - name: Docker - Build / Push
