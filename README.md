@@ -53,7 +53,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./server-files:/home/vintagestory/server-files
       - ./server-data:/home/vintagestory/server-data
 ```
 
