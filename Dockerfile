@@ -26,7 +26,10 @@ ENV HOME=/home/vintagestory \
     VS_BRANCH=stable \
     MAX_CLIENTS=16
 
-RUN useradd -m -d /home/vintagestory -u 1000 vintagestory
+RUN if getent passwd 1000 > /dev/null 2>&1; then \
+        userdel "$(getent passwd 1000 | cut -d: -f1)"; \
+    fi && \
+    useradd -m -d /home/vintagestory -u 1000 vintagestory
 
 COPY ./scripts /home/vintagestory/scripts/
 COPY branding /branding
