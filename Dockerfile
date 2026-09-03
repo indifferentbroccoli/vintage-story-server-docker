@@ -39,7 +39,7 @@ RUN if getent passwd 1000 > /dev/null 2>&1; then \
 COPY ./scripts /home/vintagestory/scripts/
 COPY branding /branding
 
-RUN mkdir -p /home/vintagestory/server-files /home/vintagestory/stratum-files && \
+RUN mkdir -p /home/vintagestory/server-files && \
     chmod +x /home/vintagestory/scripts/*.sh
 
 WORKDIR /home/vintagestory

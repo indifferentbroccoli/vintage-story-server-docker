@@ -16,9 +16,6 @@ export CyanBoldText='\033[1;36m'      # Cyan
 # End Log Definitions
 #================
 
-export SERVER_FILES="/home/vintagestory/server-files"
-export STRATUM_FILES="/home/vintagestory/stratum-files"
-
 LogInfo() {
   Log "$1" "$WhiteText"
 }
@@ -71,7 +68,7 @@ resolve_vs_version() {
 install() {
   local version
   local branch="${VS_BRANCH:-stable}"
-  local server_files="${SERVER_FILES}"
+  local server_files="/home/vintagestory/server-files"
 
   version=$(resolve_vs_version) || exit 1
 
@@ -102,6 +99,7 @@ install() {
 
 install_stratum() {
   local vs_version tag
+  local server_files="/home/vintagestory/server-files"
 
   vs_version=$(resolve_vs_version) || exit 1
 
@@ -118,8 +116,7 @@ install_stratum() {
   LogAction "Starting Stratum server install"
   LogInfo "Release: ${tag}"
 
-  # Skip if already installed at this version
-  if [ -f "${STRATUM_FILES}/.stratum_version" ] && [ "$(cat "${STRATUM_FILES}/.stratum_version")" = "${tag}" ]; then
+  if [ -f "${server_files}/.vs_version" ] && [ "$(cat "${server_files}/.vs_version")" = "${tag}" ]; then
     LogInfo "Stratum ${tag} already installed, skipping download"
     return
   fi
@@ -134,12 +131,12 @@ install_stratum() {
     exit 1
   fi
 
-  unzip -oq /tmp/stratum.zip -d "${STRATUM_FILES}"
+  unzip -oq /tmp/stratum.zip -d "${server_files}"
   rm /tmp/stratum.zip
-  echo "${tag}" > "${STRATUM_FILES}/.stratum_version"
+  echo "${tag}" > "${server_files}/.vs_version"
 
-  chmod +x "${STRATUM_FILES}/StratumServer"
-  chown -R vintagestory:vintagestory "${STRATUM_FILES}"
+  chmod +x "${server_files}/StratumServer"
+  chown -R vintagestory:vintagestory "${server_files}"
 
   LogSuccess "Stratum ${tag} installed"
 }

@@ -1,6 +1,7 @@
 #!/bin/bash
 source "/home/vintagestory/scripts/functions.sh"
 
+SERVER_FILES="/home/vintagestory/server-files"
 DATA_PATH="/home/vintagestory/server-data"
 
 DEFAULT_PORT="${DEFAULT_PORT:-42420}"
@@ -14,13 +15,11 @@ mkdir -p "${DATA_PATH}"
 
 if stratum_enabled; then
   LogAction "Starting Stratum Dedicated Server"
-  SERVER_DIR="${STRATUM_FILES}"
-  SERVER_EXEC="${SERVER_DIR}/StratumServer"
+  SERVER_EXEC="${SERVER_FILES}/StratumServer"
   SERVER_CMD=("${SERVER_EXEC}")
 else
   LogAction "Starting Vintage Story Dedicated Server"
-  SERVER_DIR="${SERVER_FILES}"
-  SERVER_EXEC="${SERVER_DIR}/VintagestoryServer.dll"
+  SERVER_EXEC="${SERVER_FILES}/VintagestoryServer.dll"
   SERVER_CMD=(dotnet "${SERVER_EXEC}")
 fi
 
@@ -29,7 +28,7 @@ if [ ! -f "${SERVER_EXEC}" ]; then
   exit 1
 fi
 
-cd "${SERVER_DIR}" || exit
+cd "${SERVER_FILES}" || exit
 
 CONFIG_FILE="${DATA_PATH}/serverconfig.json"
 
