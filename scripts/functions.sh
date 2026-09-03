@@ -16,6 +16,9 @@ export CyanBoldText='\033[1;36m'      # Cyan
 # End Log Definitions
 #================
 
+export SERVER_FILES="/home/vintagestory/server-files"
+export STRATUM_FILES="/home/vintagestory/stratum-files"
+
 LogInfo() {
   Log "$1" "$WhiteText"
 }
@@ -39,21 +42,38 @@ Log() {
   printf "$color%s$RESET$LINE" "$prefix$message$suffix"
 }
 
-install() {
+stratum_enabled() {
+  [ "${STRATUM_ENABLED:-false}" = "true" ]
+}
+
+resolve_vs_version() {
   local version="${VS_VERSION:-latest}"
   local branch="${VS_BRANCH:-stable}"
-  local server_files="/home/vintagestory/server-files"
 
-  if [ "${version}" = "latest" ]; then
-    LogInfo "Resolving latest ${branch} version..."
-    version=$(curl -sf "https://api.vintagestory.at/${branch}.json" \
-      | jq -r 'to_entries[] | select(.value.linuxserver.latest == 1) | .key')
-    if [ -z "${version}" ]; then
-      LogError "Failed to resolve latest version from https://api.vintagestory.at/${branch}.json"
-      exit 1
-    fi
-    LogInfo "Resolved latest version: ${version}"
+  if [ "${version}" != "latest" ]; then
+    echo "${version}"
+    return 0
   fi
+
+  LogInfo "Resolving latest ${branch} version..." >&2
+  version=$(curl -sf "https://api.vintagestory.at/${branch}.json" \
+    | jq -r 'to_entries[] | select(.value.linuxserver.latest == 1) | .key')
+
+  if [ -z "${version}" ]; then
+    LogError "Failed to resolve latest version from https://api.vintagestory.at/${branch}.json" >&2
+    return 1
+  fi
+
+  LogInfo "Resolved latest version: ${version}" >&2
+  echo "${version}"
+}
+
+install() {
+  local version
+  local branch="${VS_BRANCH:-stable}"
+  local server_files="${SERVER_FILES}"
+
+  version=$(resolve_vs_version) || exit 1
 
   LogAction "Starting Vintage Story server install"
   LogInfo "Version: ${version} (${branch})"
@@ -80,6 +100,50 @@ install() {
   LogSuccess "Vintage Story server v${version} installed"
 }
 
+install_stratum() {
+  local vs_version tag
+
+  vs_version=$(resolve_vs_version) || exit 1
+
+  # Releases come back newest first, tagged v<vs-version>-stratum.<rev>
+  tag=$(curl -sf "https://api.github.com/repos/StratumServer/Stratum/releases?per_page=100" \
+    | jq -r '.[] | select(.prerelease == false) | .tag_name' \
+    | grep -m1 "^v${vs_version}-stratum\.")
+
+  if [ -z "${tag}" ]; then
+    LogError "No stable Stratum release found for Vintage Story ${vs_version}"
+    exit 1
+  fi
+
+  LogAction "Starting Stratum server install"
+  LogInfo "Release: ${tag}"
+
+  # Skip if already installed at this version
+  if [ -f "${STRATUM_FILES}/.stratum_version" ] && [ "$(cat "${STRATUM_FILES}/.stratum_version")" = "${tag}" ]; then
+    LogInfo "Stratum ${tag} already installed, skipping download"
+    return
+  fi
+
+  LogInfo "Downloading Stratum ${tag}..."
+  wget -q --tries=3 --waitretry=5 \
+    "https://github.com/StratumServer/Stratum/releases/download/${tag}/stratum-${tag#v}-linux-x64.zip" \
+    -O /tmp/stratum.zip
+
+  if [ $? -ne 0 ]; then
+    LogError "Failed to download Stratum ${tag}"
+    exit 1
+  fi
+
+  unzip -oq /tmp/stratum.zip -d "${STRATUM_FILES}"
+  rm /tmp/stratum.zip
+  echo "${tag}" > "${STRATUM_FILES}/.stratum_version"
+
+  chmod +x "${STRATUM_FILES}/StratumServer"
+  chown -R vintagestory:vintagestory "${STRATUM_FILES}"
+
+  LogSuccess "Stratum ${tag} installed"
+}
+
 # Attempt to shutdown the server gracefully
 # Returns 0 if successful
 # Returns 1 if not able to shutdown
@@ -88,7 +152,7 @@ shutdown_server() {
   LogAction "Attempting graceful server shutdown"
 
   local pid
-  pid=$(pgrep -f "VintagestoryServer.dll")
+  pid=$(pgrep -f "VintagestoryServer.dll|StratumServer")
 
   if [ -n "$pid" ]; then
     kill -SIGTERM "$pid"

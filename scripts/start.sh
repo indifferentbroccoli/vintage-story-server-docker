@@ -1,12 +1,7 @@
 #!/bin/bash
 source "/home/vintagestory/scripts/functions.sh"
 
-SERVER_FILES="/home/vintagestory/server-files"
 DATA_PATH="/home/vintagestory/server-data"
-
-cd "${SERVER_FILES}" || exit
-
-LogAction "Starting Vintage Story Dedicated Server"
 
 DEFAULT_PORT="${DEFAULT_PORT:-42420}"
 MAX_PLAYERS="${MAX_PLAYERS:-16}"
@@ -17,12 +12,24 @@ MOD_PATH="${MOD_PATH:-${DATA_PATH}/Mods}"
 
 mkdir -p "${DATA_PATH}"
 
-SERVER_EXEC="${SERVER_FILES}/VintagestoryServer.dll"
+if stratum_enabled; then
+  LogAction "Starting Stratum Dedicated Server"
+  SERVER_DIR="${STRATUM_FILES}"
+  SERVER_EXEC="${SERVER_DIR}/StratumServer"
+  SERVER_CMD=("${SERVER_EXEC}")
+else
+  LogAction "Starting Vintage Story Dedicated Server"
+  SERVER_DIR="${SERVER_FILES}"
+  SERVER_EXEC="${SERVER_DIR}/VintagestoryServer.dll"
+  SERVER_CMD=(dotnet "${SERVER_EXEC}")
+fi
 
 if [ ! -f "${SERVER_EXEC}" ]; then
   LogError "Could not find server executable at: ${SERVER_EXEC}"
   exit 1
 fi
+
+cd "${SERVER_DIR}" || exit
 
 CONFIG_FILE="${DATA_PATH}/serverconfig.json"
 
@@ -43,4 +50,4 @@ jq \
   '.WorldConfig.SaveFileLocation = $saveFile | .ModPaths = ["Mods", $modPath] | .Port = $port | .MaxClients = $maxClients | .ServerName = $serverName | .Password = $password' \
   "${CONFIG_FILE}" > "${CONFIG_FILE}.tmp" && mv "${CONFIG_FILE}.tmp" "${CONFIG_FILE}"
 
-exec dotnet "${SERVER_EXEC}" --dataPath "${DATA_PATH}"
+exec "${SERVER_CMD[@]}" --dataPath "${DATA_PATH}"

@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     procps \
     gosu \
+    unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -27,7 +28,8 @@ ENV HOME=/home/vintagestory \
     VS_BRANCH=stable \
     MAX_PLAYERS=16 \
     SAVE_FILE=/home/vintagestory/server-data/Saves/default.vcdbs \
-    MOD_PATH=/home/vintagestory/server-data/Mods
+    MOD_PATH=/home/vintagestory/server-data/Mods \
+    STRATUM_ENABLED=false
 
 RUN if getent passwd 1000 > /dev/null 2>&1; then \
         userdel "$(getent passwd 1000 | cut -d: -f1)"; \
@@ -37,12 +39,12 @@ RUN if getent passwd 1000 > /dev/null 2>&1; then \
 COPY ./scripts /home/vintagestory/scripts/
 COPY branding /branding
 
-RUN mkdir -p /home/vintagestory/server-files && \
+RUN mkdir -p /home/vintagestory/server-files /home/vintagestory/stratum-files && \
     chmod +x /home/vintagestory/scripts/*.sh
 
 WORKDIR /home/vintagestory
 
 HEALTHCHECK --start-period=5m \
-            CMD pgrep -f "VintagestoryServer.dll" > /dev/null || exit 1
+            CMD pgrep -f "VintagestoryServer.dll|StratumServer" > /dev/null || exit 1
 
 ENTRYPOINT ["/home/vintagestory/scripts/init.sh"]

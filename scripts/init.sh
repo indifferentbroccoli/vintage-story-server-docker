@@ -18,7 +18,11 @@ chown -R vintagestory:vintagestory /home/vintagestory/server-files \
 cat /branding
 
 if [ "${UPDATE_ON_START:-true}" = "true" ]; then
-  install
+  if stratum_enabled; then
+    install_stratum
+  else
+    install
+  fi
 else
   LogWarn "UPDATE_ON_START is set to false, skipping server download"
 fi

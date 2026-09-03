@@ -92,6 +92,17 @@ You can use the following values to change the settings of the server on boot.
 | UPDATE_ON_START | true | If set to false, skips downloading server files on startup |
 | VS_VERSION | 1.20.12 | Vintage Story server version to download |
 | VS_BRANCH | stable | Release branch (`stable` or `unstable`) |
+| STRATUM_ENABLED | false | Run [Stratum](https://github.com/StratumServer/Stratum) instead of the vanilla server |
+
+## Stratum
+
+[Stratum](https://github.com/StratumServer/Stratum) is a server-side fork of Vintage Story
+aimed at larger multiplayer servers. Set `STRATUM_ENABLED=true` to run it in place of the
+vanilla server:
+
+```env
+STRATUM_ENABLED=true
+```
 
 > [!NOTE]
 > All other server settings (game rules, world size, roles, etc.) are configured directly in `serverconfig.json` inside the `server-data` volume.
