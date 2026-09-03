@@ -104,9 +104,6 @@ vanilla server:
 STRATUM_ENABLED=true
 ```
 
-> [!NOTE]
-> All other server settings (game rules, world size, roles, etc.) are configured directly in `serverconfig.json` inside the `server-data` volume.
-
 ## Port Forwarding
 
 Forward port `42420` UDP and TCP on your router to the host machine.
