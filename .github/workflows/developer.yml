@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - dotnet_version: "7.0"
+          - dotnet_version: "7.0-bookworm-slim"
             dotnet_major: "7"
           - dotnet_version: "8.0"
             dotnet_major: "8"
