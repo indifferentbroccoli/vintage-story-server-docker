@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN chmod 750 /usr/bin/wget /usr/bin/curl /usr/bin/unzip /usr/bin/tar
+
 LABEL maintainer="support@indifferentbroccoli.com" \
       name="indifferentbroccoli/vintage-story-server-docker" \
       github="https://github.com/indifferentbroccoli/vintage-story-server-docker" \
